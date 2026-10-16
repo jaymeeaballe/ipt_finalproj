@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PawSpa Grooming | Book an Appointment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="bar">
+    <b class="logo" data-view="home"><img src="assets/pawspa.png" alt=""> PawSpa</b>
+    <nav id="nav">
+      <button data-view="home">Home</button>
+      <button data-view="services">Services</button>
+      <button data-view="pets">My Pets</button>
+      <button data-view="book">Book Now</button>
+      <button data-view="appts">Appointments</button>
+      <button data-view="contact">FAQ &amp; Contact</button>
+      <button data-view="admin" id="adminNavBtn" hidden>Admin Dashboard</button>
+    </nav>
+    <div id="authBox"></div>
+  </div>
+</header>
+
+<main>
+<div id="vaccineReminder" class="vaccine-reminder" role="status" hidden></div>
+<section id="home" class="view">
+  <div class="hero">
+    <h1>Pamper your pet in paw-some style!</h1>
+    <p>Create an account, register your pet, then pick a service, date, time and groomer.</p>
+    <button class="btn" data-view="book">Book an appointment</button>
+    <button class="btn ghost" data-view="services">See services &amp; prices</button>
+  </div>
+  <div class="grid3">
+    <div class="card"><h3>1. Register</h3><p>Sign up and add your pet's breed, size, coat and temperament.</p></div>
+    <div class="card"><h3>2. Choose</h3><p>Services and cut styles match your pet's breed and size.</p></div>
+    <div class="card"><h3>3. Book</h3><p>Pick a date, time slot, groomer, reminders and payment method.</p></div>
+  </div>
+  <div class="card info">
+    <h3>Visit us</h3>
+    <p id="openStatus"></p>
+    <p>Sample address: 99 Mahogany St., BGC · Open Mon–Sat, 9:00 AM – 5:00 PM · Closed Sundays</p>
+    <p><b>Policies:</b> Updated vaccinations required · 24-hour cancellation notice · Aggressive pets may be declined for safety.</p>
+  </div>
+<div class="card">
+    <h3>Pet care tips &amp; facts</h3>
+    <div id="tipsBar" class="tabs">
+      <button type="button" data-tips="dog" class="on">Dogs</button>
+      <button type="button" data-tips="cat">Cats</button>
+    </div>
+    <p id="tipsMsg" class="msg" role="status"></p>
+    <div id="tips" class="grid3"></div>
+  </div>
+</section>
+
+<section id="services" class="view" hidden>
+  <h2>Services &amp; Pricing</h2>
+  <p class="muted">Prices in PHP (sample rates). Full Groom and Bath &amp; Blow Dry are priced by size.</p>
+  <div id="svcCards" class="grid2"></div>
+  <h3>Add-ons</h3>
+  <div id="addonCards" class="grid3"></div>
+  <h3>Size guide</h3>
+  <ul class="muted"><li>Small: up to 7 kg</li><li>Medium: 7–15 kg</li><li>Large: 15–30 kg</li><li>X-Large: 30 kg and above</li></ul>
+</section>
+
+<section id="auth" class="view" hidden>
+  <div class="authwrap card">
+    <div class="tabs" id="authTabs">
+      <button data-tab="login" class="on">Log in</button>
+      <button data-tab="register">Register</button>
+    </div>
+    <p id="authMsg" class="msg" role="status"></p>
+    <form id="loginForm" novalidate>
+      <label for="loginEmail">Email address</label>
+      <input name="email" id="loginEmail" type="email" placeholder="name@mail.com" autocomplete="username">
+      <small class="fb" id="loginEmailFb"></small>
+      <label for="loginPassword">Password</label>
+      <input name="password" id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password">
+      <small class="fb" id="loginPasswordFb"></small>
+      <label class="check"><input type="checkbox" id="showPw"> Show password</label>
+      <label class="check"><input type="checkbox" id="rememberMe"> Remember me</label>
+      <button class="btn" id="loginBtn" type="submit">Log in</button>
+    </form>
+    <form id="regForm" novalidate hidden>
+      <label>Full name<input name="name" autocomplete="name"></label>
+      <label for="regContact">Email address</label>
+      <input name="contact" id="regContact" type="email" placeholder="name@mail.com" inputmode="email" autocomplete="username">
+      <small class="fb" id="regContactFb"></small>
+      <label>Password<input name="password" type="password" autocomplete="new-password" placeholder="8+ characters, with a number"></label>
+      <label>Confirm password<input name="confirm" type="password" autocomplete="new-password"></label>
+      <button class="btn" type="submit">Create account</button>
+    </form>
+    <div id="googleWrap">
+      <p class="or">or</p>
+      <div id="googleBtn"></div>
+      <p id="googleNote" class="muted"></p>
+    </div>
+  </div>
+</section>
+
+<section id="pets" class="view" hidden>
+  <h2>My Pets</h2>
+  <p id="petMsg" class="msg" role="status"></p>
+  <div class="two">
+    <form id="petForm" class="card" novalidate>
+      <h3 id="petFormTitle">Register a pet</h3>
+      <label>Pet name<input name="name"></label>
+      <div class="row">
+        <label>Species<select name="species" id="petSpecies"><option>Dog</option><option>Cat</option></select></label>
+        <label>Breed<select name="breed" id="petBreed"></select></label>
+      </div>
+      <label id="otherBreedWrap" hidden>Enter your pet's breed<input name="otherBreed" id="otherBreed" maxlength="60" autocomplete="off"></label>
+      <div class="row">
+        <label>Size<select name="size">
+          <option value="">Select size</option>
+          <option value="S">Small (up to 7 kg)</option><option value="M">Medium (7–15 kg)</option>
+          <option value="L">Large (15–30 kg)</option><option value="XL">X-Large (30 kg+)</option></select></label>
+        <label>Age
+          <div class="age-input">
+            <input name="age" id="petAge" type="number" min="0.25" max="30" step="any">
+            <select name="ageUnit" id="petAgeUnit" aria-label="Age unit">
+              <option value="years">Years</option>
+              <option value="months">Months</option>
+            </select>
+          </div>
+          <small id="ageHint" class="muted">Minimum grooming age: 3 months</small>
+        </label>
+      </div>
+      <div class="row">
+        <label>Sex<select name="sex"><option>Male</option><option>Female</option></select></label>
+        <label>Coat<select name="coat"><option>Short</option><option>Medium</option><option>Long</option><option>Curly / Double coat</option></select></label>
+      </div>
+      <label>Temperament<select name="temper"><option>Calm</option><option>Anxious / Nervous</option><option>Energetic</option><option>Sensitive to handling</option></select></label>
+      <label>Allergies / skin or health notes<textarea name="notes" rows="2" maxlength="200"></textarea></label>
+      <label>Pet photo (optional)<input type="file" name="photo" id="petPhoto" accept="image/*"></label>
+      <div id="photoPreview" class="who"></div>
+      <div class="card vaccine-form">
+        <h4>Anti-rabies vaccination record</h4>
+        <label for="vaccineDate">Date vaccinated<input type="date" name="vaccineDate" id="vaccineDate"></label>
+        <label for="vaccineDueDate">Valid until / expiry date<input type="date" name="vaccineDueDate" id="vaccineDueDate"></label>
+        <label for="vaccineFile">Upload vaccine certificate or record (JPG, PNG, WebP, or PDF; max 5 MB)</label>
+        <input type="file" name="vaccineFile" id="vaccineFile" accept="image/jpeg,image/png,image/webp,application/pdf">
+        <small class="muted">The expiry date is used for reminders. You can upload a new record when the vaccine is updated.</small>
+        <div id="vaccinePreview" class="vaccine-preview"></div>
+      </div>
+      <button class="btn" id="petSave" type="submit">Save pet</button> <button class="danger" id="petCancel" type="button" hidden>Cancel edit</button>
+    </form>
+    <div id="petList" class="list"></div>
+  </div>
+</section>
+
+<section id="book" class="view" hidden>
+  <h2>Book an Appointment</h2>
+  <p id="bkMsg" class="msg" role="status"></p>
+  <form id="bookForm" novalidate>
+    <div class="card"><h3>1. Select pet</h3>
+      <select id="bkPet"></select>
+      <div id="bkPetPreview"></div>
+      <p id="noPets" class="muted" hidden>You have no pets yet. <a href="#" data-view="pets">Register a pet first.</a></p>
+    </div>
+    <div class="card"><h3>2. Select service</h3>
+      <div id="svcList" class="opts"></div>
+      <label id="cutWrap" hidden>Haircut style (based on breed)<select id="bkCut"></select></label>
+      <h4>Add-ons</h4><div id="addons" class="opts"></div>
+    </div>
+    <div class="card"><h3>3. Date, time &amp; groomer</h3>
+      <label>Preferred groomer<select id="bkGroomer"></select></label>
+      <p id="groomerNote" class="muted"></p>
+      <div class="two">
+        <div id="cal"></div>
+        <div><h4 id="slotTitle">Pick a date</h4><div id="slots" class="slots"></div></div>
+      </div>
+    </div>
+    <div class="card"><h3>4. Reminders &amp; notes</h3>
+      <label class="check"><input type="checkbox" name="rem" value="Email reminder 24 hours before" checked> Email reminder 24 hours before</label>
+      <label class="check"><input type="checkbox" name="rem" value="SMS reminder 2 hours before"> SMS reminder 2 hours before</label>
+      <label class="check"><input type="checkbox" name="rem" value="Remind me to bring vaccine card"> Remind me to bring vaccine card</label>
+      <label class="check"><input type="checkbox" name="rem" value="Notify me when my pet is ready for pick-up"> Notify me when my pet is ready for pick-up</label>
+      <label>Special requests<textarea id="bkNotes" rows="2" maxlength="200"></textarea></label>
+    </div>
+    <div class="card"><h3>5. Payment method</h3>
+      <div id="payList" class="opts"></div>
+      <p class="muted">Payment is settled at the salon.</p>
+    </div>
+    <div class="card total"><h3>Summary</h3><div id="summary" class="muted">Choose a pet and a service.</div>
+      <button class="btn" id="bkBtn" type="submit">Confirm booking</button></div>
+  </form>
+</section>
+
+<section id="appts" class="view" hidden>
+  <h2>My Appointments</h2>
+  <p class="muted"><span class="tag st-pending">Pending</span>  <span class="tag st-accepted">Accepted</span> <span class="tag st-declined">Declined</span> </p>
+  <p id="apptMsg" class="msg" role="status"></p>
+  <div id="apptList" class="list"></div>
+</section>
+<section id="profile" class="view" hidden>
+  <h2>My Profile</h2>
+  <form id="profForm" class="card authwrap" novalidate>
+    <p id="profMsg" class="msg" role="status"></p>
+    <label>Login (cannot be changed)<input name="login" readonly></label>
+    <label>Full name<input name="name"></label>
+    <h4>Change password (optional)</h4>
+    <label for="profileCurrentPassword">Current password</label>
+    <div class="password-input">
+      <input id="profileCurrentPassword" name="current" type="password" autocomplete="current-password">
+      <button class="password-toggle" type="button" data-toggle-password="profileCurrentPassword" aria-label="Show current password" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="M4 4l16 16"></path></svg>
+      </button>
+    </div>
+    <label for="profileNewPassword">New password</label>
+    <div class="password-input">
+      <input id="profileNewPassword" name="newpw" type="password" autocomplete="new-password" placeholder="8+ characters, with a number">
+      <button class="password-toggle" type="button" data-toggle-password="profileNewPassword" aria-label="Show new password" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="M4 4l16 16"></path></svg>
+      </button>
+    </div>
+    <button class="btn" type="submit">Save changes</button>
+  </form>
+</section>
+
+<section id="contact" class="view" hidden>
+  <h2>FAQ &amp; Contact</h2>
+  <div class="two">
+    <div>
+      <details><summary>What vaccinations are required?</summary><p class="muted">Dogs and cats must have an up-to-date rabies vaccine. Bring the vaccine card on the day.</p></details>
+      <details><summary>How long does a groom take?</summary><p class="muted">A Full Groom usually takes 2–4 hours depending on size and coat. Bath &amp; Blow Dry takes 1–2 hours.</p></details>
+      <details><summary>Can I reschedule or cancel?</summary><p class="muted">Yes, from My Appointments. A cancellation request must include a reason and is not final until the salon reviews it. If the salon declines it, you will see their explanation in My Appointments. Please give at least 24 hours' notice.</p></details>
+      <details><summary>My pet's coat is badly matted.</summary><p class="muted">Add De-matting. Severe matting may need a short shave-down for your pet's comfort; the groomer will discuss it with you.</p></details>
+      <details><summary>Which size should I choose?</summary><p class="muted">Small up to 7 kg, Medium 7–15 kg, Large 15–30 kg, X-Large 30 kg and above.</p></details>
+      <p class="muted">Sample contact: (02) 8123-4567 · hello@pawspa.example </p>
+    </div>
+    <form id="contactForm" class="card" novalidate>
+      <h3>Send us a message</h3>
+      <p id="contactMsg" class="msg" role="status"></p>
+      <label>Name<input name="name"></label>
+      <label>Email<input name="email" type="email"></label>
+      <label>Message<textarea name="message" rows="4" maxlength="500"></textarea></label>
+      <button class="btn" type="submit">Send</button>
+    </form>
+  </div>
+</section>
+<section id="admin" class="view" hidden>
+  <h2>Admin Dashboard</h2>
+  <p id="adminMsg" class="msg" role="status"></p>
+  <div id="adminStats" class="stats"></div>
+  <div class="card">
+    <input id="adminSearch" placeholder="Search by customer, pet, service, groomer or reference">
+    <div id="adminTabs" class="filters"></div>
+  </div>
+  <div id="adminList" class="list"></div>
+</section>
+</main>
+<footer>PawSpa Grooming · EST 2026</footer>
+<script src="data.js"></script>
+<script src="http.js"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="pets.js"></script>
+<script src="booking.js"></script>
+<script src="appointments.js"></script>
+<script src="account.js"></script>
+<script src="admin.js"></script>
+<script src="google.js"></script>
+<script src="main.js"></script>
+<script>
+  if (!window.pawspaReady) {
+    document.body.insertAdjacentHTML("afterbegin", '<div style="background:#ffdceb;color:#b3123f;padding:12px;text-align:center;font-weight:700">Some JavaScript files did not load. Keep index.html, style.css and all the .js files together in ONE folder, then refresh.</div>');
+  }
+</script>
+</body>
+</html>
